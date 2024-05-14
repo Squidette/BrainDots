@@ -7,16 +7,20 @@ public class rigidLineGenerate : MonoBehaviour
 
     void Start()
     {
-        emptyLine = Instantiate(rigidLinePrefab);
-        emptyLine.transform.parent = this.transform;
+        CreateNewEmptyLine();
     }
 
     void Update()
     {
         if (emptyLine.GetComponent<rigidLine>().GetIsDrawn() == true)
         {
-            emptyLine = Instantiate(rigidLinePrefab);
-            emptyLine.transform.parent = this.transform;
+            CreateNewEmptyLine();
         }
+    }
+
+    void CreateNewEmptyLine()
+    {
+        emptyLine = Instantiate(rigidLinePrefab);
+        emptyLine.transform.parent = this.transform;
     }
 }

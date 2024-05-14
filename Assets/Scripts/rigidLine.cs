@@ -85,11 +85,9 @@ public class rigidLine : MonoBehaviour
             myRigidbody.bodyType = RigidbodyType2D.Dynamic;
             isDoneDrawing = true;
 
-            // 컴포지트 콜라이더가 콜라이더를 보정해준다
-            compositeCollider.GenerateGeometry();
             myRigidbody.mass = PositionCount;
 
-            // 드래그 단계를 거치지 않은 채로 마우스를 뗐다면 점을 생성함
+            /// 드래그 단계를 거치지 않은 채로 마우스를 뗐다면 점을 생성함
             if (lineRenderer.positionCount == 1)
             {
                 // 라인렌더러는 정점 정보가 2개 이상일때만 뭔가를 그려 주므로 2개를 생성해서 같은 정보를 담을 것
@@ -107,10 +105,20 @@ public class rigidLine : MonoBehaviour
                 // 무게중심을 점이 있는 곳으로 바꿔 주기
                 myRigidbody.centerOfMass = new Vector2(currentPosition.x, currentPosition.y);
             }
+            /// 드래그를 거쳐 선이 생성된 경우
             else if (lineRenderer.positionCount > 1)
             {
-                // 선이 생성되었다면 처음 클릭했던 위치에도 점 콜라이더를 생성해 주자
+                // 처음 클릭했던 위치에도 점 콜라이더를 생성해 주자
                 Instantiate(hexagonCollider, new Vector3(initialMouseDownPosition.x, initialMouseDownPosition.y, 0.0F), Quaternion.identity).transform.parent = transform;
+
+                // 지금까지 생성된 자식 콜라이더들을 재료로 해서 컴포지트 콜라이더가 도형을 최적화하게 한다
+                compositeCollider.GenerateGeometry();
+
+                // 새로운 콜라이더 정보들을 컴포지트 콜라이더가 가지고 있으므로 기존의 모든 콜라이더들은 제거해줌
+                foreach (Transform child in transform)
+                {
+                    Destroy(child.gameObject);
+                }
 
                 // 무게중심을 점들의 평균위치로 바꿔 주기
                 myRigidbody.centerOfMass = new Vector2(PositionSumX / PositionCount, PositionSumY / PositionCount);
