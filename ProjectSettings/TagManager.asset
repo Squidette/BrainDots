@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BlueTargetBall
+  - PinkTargetBall
   layers:
   - Default
   - TransparentFX
@@ -40,4 +42,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: haloEffect
+    uniqueID: 1146976183
+    locked: 0
+  - name: rigidObject
+    uniqueID: 3101043343
+    locked: 0
+  - name: particleEffect
+    uniqueID: 170210799
     locked: 0

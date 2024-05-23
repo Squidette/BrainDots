@@ -1,5 +1,8 @@
 using UnityEngine;
 
+// 아직 확정되지 않은 선을 시각화 해줌
+// 박스콜라이더로 가는길에 걸리는게 없는지 확인
+
 public class unconfirmedLineVisualize : MonoBehaviour
 {
     LineRenderer lineRenderer;
@@ -47,7 +50,7 @@ public class unconfirmedLineVisualize : MonoBehaviour
 
     void UpdateBoxColliderPosition()
     {
-        // 계산
+        // 라인렌더러의 두 점의 위치를 토대로 박스콜라이더 위치 계산
         Vector3 pos = new Vector3(
             (lineRenderer.GetPosition(0).x + lineRenderer.GetPosition(1).x) / 2,
             (lineRenderer.GetPosition(0).y + lineRenderer.GetPosition(1).y) / 2,
@@ -55,12 +58,14 @@ public class unconfirmedLineVisualize : MonoBehaviour
             );
 
         float distance = Vector2.Distance(lineRenderer.GetPosition(0), lineRenderer.GetPosition(1));
+        if (distance < 0.01F) distance = 0.01f;
+
         float angle = Mathf.Atan2(
             lineRenderer.GetPosition(1).y - lineRenderer.GetPosition(0).y,
             lineRenderer.GetPosition(1).x - lineRenderer.GetPosition(0).x
             ) * Mathf.Rad2Deg;
 
-        // 박스콜라이더에 적용
+        // 계산한 수치를 박스콜라이더에 적용
         boxCollider.transform.position = pos;
         boxCollider.transform.localScale = new Vector3(distance, boxCollider.transform.localScale.y, boxCollider.transform.localScale.z);
         boxCollider.transform.rotation = Quaternion.Euler(0, 0, angle);
